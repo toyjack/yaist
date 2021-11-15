@@ -186,7 +186,10 @@ export default {
         return;
       }
       let temp2 = this.ids.indexOf("\n", temp);
-      let temp3 = this.ids.substring(temp + 3, temp2-1);
+      // for local
+      // let temp3 = this.ids.substring(temp + 3, temp2-1); 
+      // for netlify
+      let temp3 = this.ids.substring(temp + 3, temp2); 
       // console.log(this.convertCodePoints(temp3));
       this.term = temp3.replace(/[\t\u2ff0-\u2fff]|\[[^\]]+\]/g, "");
     },
