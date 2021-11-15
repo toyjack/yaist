@@ -16,13 +16,13 @@
         </div>
 
         <div class="buttons is-right">
-          <button
-            class="button is-danger"
+          <b-button
+            type="is-danger"
             @click="decompose"
             :loading="loadingIDS"
           >
             分解
-          </button>
+          </b-button>
           <button class="button is-primary" @click="search">検索</button>
         </div>
       </section>
@@ -186,7 +186,7 @@ export default {
         return;
       }
       let temp2 = this.ids.indexOf("\n", temp);
-      // for local
+      // for local 魔法！触るな！
       // let temp3 = this.ids.substring(temp + 3, temp2-1); 
       // for netlify
       let temp3 = this.ids.substring(temp + 3, temp2); 
