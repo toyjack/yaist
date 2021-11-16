@@ -83,13 +83,14 @@
         <div class="columns is-multiline">
           <div class="column is-3" v-for="result of sorted_results">
             <div class="card">
-              <div class="card-image">
+              <div class="card-image" @click="copyToClipboard(result.char)">
                 <b-image
                     class="is-clickable"
                     :src="getGwSvgUrl(result.char)"
                     ratio="1by1"
                     lazy
                     placeholder="gazou"
+
                   ></b-image>
                 <!-- <figure
                   class="image is-1by1"
@@ -195,6 +196,18 @@ export default {
       // console.log(this.convertCodePoints(temp3));
       this.term = temp3.replace(/[\t\u2ff0-\u2fff]|\[[^\]]+\]/g, "");
     },
+    getIDS(char){
+      let temp = this.ids.indexOf("\t" + char + "\t");
+      if (temp == -1) {
+        return;
+      }
+      let temp2 = this.ids.indexOf("\n", temp);
+      // for local 魔法！触るな！
+      // let temp3 = this.ids.substring(temp + 3, temp2-1);
+      // for netlify
+      let temp3 = this.ids.substring(temp + 3, temp2);
+      return temp3
+    },
     getTotalStrokes: getTotalStrokes,
     char2Unicode: char2Unicode,
     getUnicodeBlock: getUnicodeBlock,
@@ -220,7 +233,7 @@ export default {
         case "tei":
           toPaste = `
 <glyph xml:id="${this.char2Unicode(char)}">
-    <mapping type="IDS">IDS</mapping>
+    <mapping type="IDS">${this.getIDS(char)}</mapping>
     <mapping type="unicode">${char}</mapping>
     <figure>
         <graphic url="${this.getGwPngUrl(char)}"/>
