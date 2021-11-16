@@ -97,21 +97,24 @@
                   <div class="media-left">
                     <figure class="image is-32x32">
                       <span class="is-size-2">
-                        <a
-                          :href="
-                            'https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=' +
-                            result.char
-                          "
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {{ result.char }}
-                        </a>
+                        {{ result.char }}
                       </span>
                     </figure>
                   </div>
                   <div class="media-content">
-                    <p class="title is-7">{{ char2Unicode(result.char) }}</p>
+                    <p class="title is-7">
+                      <a
+                        :href="
+                          'https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=' +
+                          result.char
+                        "
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {{ char2Unicode(result.char) }}
+                      </a>
+                    </p>
+
                     <p class="subtitle is-7">
                       {{ getUnicodeBlock(result.char) }}
                     </p>
