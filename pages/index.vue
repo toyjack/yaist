@@ -85,26 +85,28 @@
             <div class="card">
               <div class="card-image" @click="copyToClipboard(result.char)">
                 <b-image
-                    class="is-clickable"
-                    :src="getGwSvgUrl(result.char)"
-                    ratio="1by1"
-                    lazy
-                    placeholder="gazou"
-
-                  ></b-image>
-                <!-- <figure
-                  class="image is-1by1"
-                  @click="copyToClipboard(result.char)"
-                >
-                  <img :src="getGwSvgUrl(result.char)" alt="Placeholder image" />
-                </figure> -->
+                  class="is-clickable"
+                  :src="getGwSvgUrl(result.char)"
+                  ratio="1by1"
+                  lazy
+                  placeholder="gazou"
+                ></b-image>
               </div>
               <div class="card-content">
                 <div class="media">
                   <div class="media-left">
                     <figure class="image is-32x32">
                       <span class="is-size-2">
-                        {{ result.char }}
+                        <a
+                          :href="
+                            'https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=' +
+                            result.char
+                          "
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {{ result.char }}
+                        </a>
                       </span>
                     </figure>
                   </div>
@@ -196,7 +198,7 @@ export default {
       // console.log(this.convertCodePoints(temp3));
       this.term = temp3.replace(/[\t\u2ff0-\u2fff]|\[[^\]]+\]/g, "");
     },
-    getIDS(char){
+    getIDS(char) {
       let temp = this.ids.indexOf("\t" + char + "\t");
       if (temp == -1) {
         return;
@@ -206,7 +208,7 @@ export default {
       // let temp3 = this.ids.substring(temp + 3, temp2-1);
       // for netlify
       let temp3 = this.ids.substring(temp + 3, temp2);
-      return temp3
+      return temp3;
     },
     getTotalStrokes: getTotalStrokes,
     char2Unicode: char2Unicode,
@@ -254,9 +256,8 @@ export default {
 </script>
 
 <style lang="css">
-
 .glyph-hover {
-   width: 150px;
+  width: 150px;
   height: 150px;
   background-color: #fff;
 

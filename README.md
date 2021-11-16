@@ -1,4 +1,5 @@
 # hids
+[![Netlify Status](https://api.netlify.com/api/v1/badges/af2af95f-55be-4d15-aec2-383ba52875eb/deploy-status)](https://app.netlify.com/sites/hi-ids/deploys)
 
 ## Build Setup
 need nodejs version before 17!!
