@@ -15,6 +15,5 @@
     "idsfind": "^2.0.1",
     "nuxt": "^2.15.7",
     "nuxt-buefy": "^0.4.8"
-  },
-  "devDependencies": {}
+  }
 }
