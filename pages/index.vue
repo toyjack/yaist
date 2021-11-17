@@ -76,10 +76,41 @@
           </b-field>
         </div>
       </section>
+
+      <section>
+        <div class="buttons">
+          <b-button
+            label="TEIブロックをカスタマイズ"
+            type="is-dark"
+            @click="isShowXmlCustomize = !isShowXmlCustomize"
+          />
+        </div>
+        <b-modal v-model="isShowXmlCustomize">
+          <div class="card">
+            <div class="card-content">
+              <p class="title">TEIブロックを編集する</p>
+              <p>[[unicode]]は「u4E00」のようなUnicodeスカラ値です。</p>
+              <p>[[IDS]]は「⿰口土」のような漢字のIDS情報です。</p>
+              <p>[[character]]は漢字符号です。</p>
+              <p>[[GlyphWikiPNG]]はGlyphWikiのPNG画像URLです。[[GlyphWikiSVG]]にすると、SVGファイルのURLになります。</p>
+              <b-field label="TEIブロックのテンプレート">
+                <b-input type="textarea" v-model="xmlBlock"></b-input>
+              </b-field>
+              <div class="buttons is-right">
+                <b-button
+                  label="保存"
+                  @click="isShowXmlCustomize = false"
+                ></b-button>
+              </div>
+            </div>
+          </div>
+        </b-modal>
+      </section>
     </div>
 
     <div class="column">
       <section class="section">
+        <div class="divider">結果数：{{ results.length }}</div>
         <div class="columns is-multiline">
           <div class="column is-3" v-for="result of sorted_results">
             <div class="card">
@@ -147,6 +178,8 @@ export default {
       pasteData: "character",
       ids: {},
       loadingIDS: true,
+      isShowXmlCustomize: false,
+      xmlBlock: "",
     };
   },
   computed: {
@@ -164,6 +197,15 @@ export default {
     },
   },
   mounted() {
+    this.xmlBlock = `<glyph xml:id="[[unicode]]">
+    <mapping type="IDS">[[IDS]]</mapping>
+    <mapping type="Unicode">[[character]]</mapping>
+    <mapping type="standard">hoge</mapping>
+    <figure>
+        <graphic url="[[GlyphWikiPNG]]"/>
+    </figure>
+</glyph>
+`;
     this.fetchIDS();
   },
   methods: {
@@ -228,6 +270,7 @@ export default {
     },
     copyToClipboard: function (char) {
       let toPaste = "";
+      let xmlUnicode=this.char2Unicode(char)
       switch (this.pasteData) {
         case "character":
           toPaste = char;
@@ -236,15 +279,17 @@ export default {
           toPaste = this.char2Unicode(char);
           break;
         case "tei":
-          toPaste = `
-<glyph xml:id="${this.char2Unicode(char)}">
-    <mapping type="IDS">${this.getIDS(char)}</mapping>
-    <mapping type="unicode">${char}</mapping>
-    <figure>
-        <graphic url="${this.getGwPngUrl(char)}"/>
-    </figure>
-</glyph>
-          `;
+          toPaste = this.xmlBlock;
+          xmlUnicode = xmlUnicode.replace('U+',"u")
+          toPaste = toPaste.replaceAll("[[unicode]]", xmlUnicode);
+          toPaste = toPaste.replaceAll("[[IDS]]", this.getIDS(char));
+          toPaste = toPaste.replaceAll("[[character]]", char);
+          toPaste = toPaste.replaceAll(
+            "[[GlyphWikiPNG]]",
+            this.getGwPngUrl(char)
+          );
+          toPaste = toPaste.replaceAll('[[GlyphWikiSVG', this.getGwSvgUrl(char))
+          toPaste = console.log(toPaste);
       }
       navigator.clipboard.writeText(toPaste).catch((e) => {
         console.error(e);
@@ -254,18 +299,11 @@ export default {
         type: "is-success",
       });
     },
+    saveXmlBlock() {},
   },
 };
 </script>
 
 <style lang="css">
-.glyph-hover {
-  width: 150px;
-  height: 150px;
-  background-color: #fff;
-
-  box-shadow: 120px 80px 40px 20px #0ff;
-  /* in order: x offset, y offset, blur size, spread size, color */
-  /* blur size and spread size are optional (they default to 0) */
-}
+@import "@creativebulma/bulma-divider";
 </style>
