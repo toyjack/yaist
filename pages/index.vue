@@ -268,7 +268,7 @@ export default {
       const url = "https://glyphwiki.org/glyph/" + code + ".svg";
       return url;
     },
-    copyToClipboard: function (char) {
+    async copyToClipboard (char) {
       let toPaste = "";
       let xmlUnicode=this.char2Unicode(char)
       switch (this.pasteData) {
@@ -289,9 +289,8 @@ export default {
             this.getGwPngUrl(char)
           );
           toPaste = toPaste.replaceAll('[[GlyphWikiSVG', this.getGwSvgUrl(char))
-          toPaste = console.log(toPaste);
       }
-      navigator.clipboard.writeText(toPaste).catch((e) => {
+      await navigator.clipboard.writeText(toPaste).catch((e) => {
         console.error(e);
       });
       this.$buefy.toast.open({
