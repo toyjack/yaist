@@ -78,6 +78,11 @@
       </section>
 
       <section>
+        <b-taglist attached>
+          <b-tag type="is-dark">正字情報</b-tag>
+          <b-tag type="is-success" v-if="!loadingVariants">OK</b-tag>
+          <b-tag type="is-danger" v-else>Loading</b-tag>
+        </b-taglist>
         <div class="buttons">
           <b-button
             label="TEIブロックをカスタマイズ"
@@ -108,6 +113,7 @@
         :pasteType="pasteData"
         :xmlTemplate="xmlBlock"
         :idsData="ids"
+        :variants="variants"
       />
     </div>
   </div>
@@ -132,6 +138,8 @@ export default {
       loadingIDS: true,
       isShowXmlCustomize: false,
       xmlBlock: "",
+      variants: {},
+      loadingVariants: true,
     };
   },
   computed: {
@@ -152,13 +160,14 @@ export default {
     this.xmlBlock = `<glyph xml:id="[[unicode]]">
     <mapping type="IDS">[[IDS]]</mapping>
     <mapping type="Unicode">[[character]]</mapping>
-    <mapping type="standard">hoge</mapping>
+    <mapping type="standard">[[standard]]</mapping>
     <figure>
         <graphic url="[[GlyphWikiPNG]]"/>
     </figure>
 </glyph>
 `;
     this.fetchIDS();
+    this.fetchVariants()
   },
   methods: {
     getTotalStrokes: getTotalStrokes,
@@ -166,6 +175,11 @@ export default {
       const ids = await this.$axios.$get("/cjkvi_ids.txt");
       this.ids = ids;
       this.loadingIDS = false;
+    },
+    async fetchVariants() {
+      const variants = await this.$axios.$get("/variants.json");
+      this.variants = variants;
+      this.loadingVariants = false;
     },
     search() {
       this.results = [];
