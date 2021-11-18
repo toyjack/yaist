@@ -25,7 +25,7 @@
 
       <section class="section">
         <div class="field">
-          <label for="" class="label" for="sortStyle">結果順序</label>
+          <label for="" class="label">結果順序</label>
           <b-field>
             <b-radio
               v-model="sortStyle"
@@ -49,7 +49,7 @@
 
       <section class="section">
         <div class="field">
-          <label for="" class="label" for="pasteData">ペーストデータ</label>
+          <label for="" class="label">ペーストデータ</label>
           <b-field>
             <b-radio
               v-model="pasteData"
@@ -85,8 +85,10 @@
             @click="isShowXmlCustomize = !isShowXmlCustomize"
           />
         </div>
-        <b-modal v-model="isShowXmlCustomize">
-          <div class="card">
+        <b-modal v-model="isShowXmlCustomize" trap-focus aria-role="dialog">
+         <xml-customize :xml-template.sync="xmlBlock" @close="isShowXmlCustomize=false">
+         </xml-customize>
+          <!-- <div class="card">
             <div class="card-content">
               <p class="title">TEIブロックを編集する</p>
               <p>[[unicode]]は「u4E00」のようなUnicodeスカラ値です。</p>
@@ -105,7 +107,7 @@
                 ></b-button>
               </div>
             </div>
-          </div>
+          </div> -->
         </b-modal>
       </section>
     </div>
@@ -124,10 +126,11 @@
 <script>
 import { idsfind, getTotalStrokes } from "idsfind";
 import Results from "../components/results.vue";
+import xmlCustomize from "../components/xmlCustomize.vue";
 
 export default {
   name: "HomePage",
-  components: { Results },
+  components: { Results, xmlCustomize },
   data() {
     return {
       term: "",
