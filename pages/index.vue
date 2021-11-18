@@ -85,29 +85,19 @@
             @click="isShowXmlCustomize = !isShowXmlCustomize"
           />
         </div>
-        <b-modal v-model="isShowXmlCustomize" trap-focus aria-role="dialog">
-         <xml-customize :xml-template.sync="xmlBlock" @close="isShowXmlCustomize=false">
-         </xml-customize>
-          <!-- <div class="card">
-            <div class="card-content">
-              <p class="title">TEIブロックを編集する</p>
-              <p>[[unicode]]は「u4E00」のようなUnicodeスカラ値です。</p>
-              <p>[[IDS]]は「⿰口土」のような漢字のIDS情報です。</p>
-              <p>[[character]]は漢字符号です。</p>
-              <p>
-                [[GlyphWikiPNG]]はGlyphWikiのPNG画像URLです。[[GlyphWikiSVG]]にすると、SVGファイルのURLになります。
-              </p>
-              <b-field label="TEIブロックのテンプレート">
-                <b-input type="textarea" v-model="xmlBlock"></b-input>
-              </b-field>
-              <div class="buttons is-right">
-                <b-button
-                  label="保存"
-                  @click="isShowXmlCustomize = false"
-                ></b-button>
-              </div>
-            </div>
-          </div> -->
+        <b-modal
+          v-model="isShowXmlCustomize"
+          trap-focus
+          aria-role="dialog"
+          has-modal-card
+          aria-label="XMLテンプレート"
+          close-button-aria-label="閉じる"
+          aria-modal
+        >
+          <xml-customize
+            :xml-template.sync="xmlBlock"
+            @close="isShowXmlCustomize = false"
+          />
         </b-modal>
       </section>
     </div>
@@ -120,7 +110,8 @@
         :idsData="ids"
       />
     </div>
-  </div> <!-- end for div.columns -->
+  </div>
+  <!-- end for div.columns -->
 </template>
 
 <script>
