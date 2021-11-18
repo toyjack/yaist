@@ -6,42 +6,30 @@
       aria-label="main navigation"
     >
       <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          HIDS
-        </a>
+        <a class="navbar-item" href="/"> HIIDSS(Hi-IDS-Search) </a>
 
         <div class="navbar-burger">
           <span />
           <span />
           <span />
         </div>
-
       </div>
-       <div class="navbar-menu">
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <div class="button" @click="isManualShow=!isManualShow">説明</div>
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <div class="button" @click="isManualShow = !isManualShow">
+                説明
               </div>
             </div>
           </div>
         </div>
+      </div>
     </nav>
 
     <b-modal v-model="isManualShow" :width="640" scroll="keep">
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src="/static/img/placeholder-1280x960.png" alt="Image">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        未完成
-                    </div>
-                </div>
-            </div>
-        </b-modal>
+      <Manual @close="isManualShow = false" />
+    </b-modal>
 
     <section class="main-content columns">
       <div class="container column is-10">
@@ -52,7 +40,9 @@
 </template>
 
 <script>
+import Manual from "../components/manual.vue";
 export default {
+  components: { Manual },
   data() {
     return {
       isManualShow: false,
