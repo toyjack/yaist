@@ -72,7 +72,7 @@ export default {
             // let temp3 = this.ids.substring(temp + 3, temp2-1);
             // for netlify
             let temp3 = this.idsData.substring(temp + 3, temp2);
-            return temp3;
+            return temp3.trim();
         },
     async copyToClipboard (char) {
       let toPaste = "";

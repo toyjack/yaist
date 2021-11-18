@@ -188,7 +188,7 @@ export default {
       // let temp3 = this.ids.substring(temp + 3, temp2-1);
       // for netlify
       let temp3 = this.ids.substring(temp + 3, temp2);
-      this.term = temp3.replace(/[\t⿰-⿿]|\[[^\]]+\]/g, "");
+      this.term = temp3.trim().replace(/[\t⿰-⿿]|\[[^\]]+\]/g, "");
     },
   },
 };
