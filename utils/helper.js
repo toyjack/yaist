@@ -62,3 +62,20 @@ export function getUnicodeBlock(char){
   return "Unknown"
 }
 
+
+export function getGwPngUrl(char) {
+  const code = "u" + char2Unicode(char).substring(2).toLowerCase();
+  const url = "https://glyphwiki.org/glyph/" + code + ".png";
+  return url;
+}
+export function getGwSvgUrl(char) {
+  const code = "u" + char2Unicode(char).substring(2).toLowerCase();
+  const url = "https://glyphwiki.org/glyph/" + code + ".svg";
+  return url;
+}
+
+export function convertCodePoints(str) {
+  return Array.from(str).map((char) => {
+    return char.codePointAt(0).toString(16);
+  });
+}

@@ -25,11 +25,11 @@
 
       <section class="section">
         <div class="field">
-          <label for="" class="label">結果順序</label>
+          <label for="" class="label" for="sortStyle">結果順序</label>
           <b-field>
             <b-radio
-              v-model="resultsSorted"
-              name="resultsSorted"
+              v-model="sortStyle"
+              name="sortStyle"
               native-value="byUnicode"
             >
               Unicode順
@@ -37,8 +37,8 @@
           </b-field>
           <b-field>
             <b-radio
-              v-model="resultsSorted"
-              name="resultsSorted"
+              v-model="sortStyle"
+              name="sortStyle"
               native-value="byStrokes"
             >
               画数順
@@ -49,7 +49,7 @@
 
       <section class="section">
         <div class="field">
-          <label for="" class="label">ペーストデータ</label>
+          <label for="" class="label" for="pasteData">ペーストデータ</label>
           <b-field>
             <b-radio
               v-model="pasteData"
@@ -92,7 +92,9 @@
               <p>[[unicode]]は「u4E00」のようなUnicodeスカラ値です。</p>
               <p>[[IDS]]は「⿰口土」のような漢字のIDS情報です。</p>
               <p>[[character]]は漢字符号です。</p>
-              <p>[[GlyphWikiPNG]]はGlyphWikiのPNG画像URLです。[[GlyphWikiSVG]]にすると、SVGファイルのURLになります。</p>
+              <p>
+                [[GlyphWikiPNG]]はGlyphWikiのPNG画像URLです。[[GlyphWikiSVG]]にすると、SVGファイルのURLになります。
+              </p>
               <b-field label="TEIブロックのテンプレート">
                 <b-input type="textarea" v-model="xmlBlock"></b-input>
               </b-field>
@@ -109,72 +111,28 @@
     </div>
 
     <div class="column">
-      <section class="section">
-        <div class="divider">結果数：{{ results.length }}</div>
-        <div class="columns is-multiline">
-          <div class="column is-3" v-for="result of sorted_results">
-            <div class="card">
-              <div class="card-image" @click="copyToClipboard(result.char)">
-                <b-image
-                  class="is-clickable"
-                  :src="getGwSvgUrl(result.char)"
-                  ratio="1by1"
-                  lazy
-                  placeholder="gazou"
-                ></b-image>
-              </div>
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-left">
-                    <figure class="image is-32x32">
-                      <span class="is-size-2">
-                        {{ result.char }}
-                      </span>
-                    </figure>
-                  </div>
-                  <div class="media-content">
-                    <p class="title is-7">
-                      <a
-                        :href="
-                          'https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=' +
-                          result.char
-                        "
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {{ char2Unicode(result.char) }}
-                      </a>
-                    </p>
-
-                    <p class="subtitle is-7">
-                      {{ getUnicodeBlock(result.char) }}
-                    </p>
-                  </div>
-                </div>
-
-                <div class="content">
-                  <p class="subtitle is-7">画数：{{ result.stroke }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Results
+        :sorted_results="sorted_results"
+        :pasteType="pasteData"
+        :xmlTemplate="xmlBlock"
+        :idsData="ids"
+      />
     </div>
-  </div>
+  </div> <!-- end for div.columns -->
 </template>
 
 <script>
 import { idsfind, getTotalStrokes } from "idsfind";
-import { char2Unicode, getUnicodeBlock } from "../utils/helper";
+import Results from "../components/results.vue";
 
 export default {
   name: "HomePage",
+  components: { Results },
   data() {
     return {
       term: "",
       results: [],
-      resultsSorted: "byUnicode",
+      sortStyle: "byUnicode",
       pasteData: "character",
       ids: {},
       loadingIDS: true,
@@ -184,7 +142,7 @@ export default {
   },
   computed: {
     sorted_results: function () {
-      switch (this.resultsSorted) {
+      switch (this.sortStyle) {
         case "byUnicode":
           return this.results.sort(function (a, b) {
             return a.char < b.char ? -1 : 1;
@@ -209,6 +167,7 @@ export default {
     this.fetchIDS();
   },
   methods: {
+    getTotalStrokes: getTotalStrokes,
     async fetchIDS() {
       const ids = await this.$axios.$get("/cjkvi_ids.txt");
       this.ids = ids;
@@ -224,11 +183,6 @@ export default {
         });
       }
     },
-    convertCodePoints(str) {
-      return Array.from(str).map((char) => {
-        return char.codePointAt(0).toString(16);
-      });
-    },
     decompose() {
       let char = Array.from(this.term)[0];
       let temp = this.ids.indexOf("\t" + char + "\t");
@@ -240,65 +194,8 @@ export default {
       // let temp3 = this.ids.substring(temp + 3, temp2-1);
       // for netlify
       let temp3 = this.ids.substring(temp + 3, temp2);
-      // console.log(this.convertCodePoints(temp3));
-      this.term = temp3.replace(/[\t\u2ff0-\u2fff]|\[[^\]]+\]/g, "");
+      this.term = temp3.replace(/[\t⿰-⿿]|\[[^\]]+\]/g, "");
     },
-    getIDS(char) {
-      let temp = this.ids.indexOf("\t" + char + "\t");
-      if (temp == -1) {
-        return;
-      }
-      let temp2 = this.ids.indexOf("\n", temp);
-      // for local 魔法！触るな！
-      // let temp3 = this.ids.substring(temp + 3, temp2-1);
-      // for netlify
-      let temp3 = this.ids.substring(temp + 3, temp2);
-      return temp3;
-    },
-    getTotalStrokes: getTotalStrokes,
-    char2Unicode: char2Unicode,
-    getUnicodeBlock: getUnicodeBlock,
-    getGwPngUrl: function (char) {
-      const code = "u" + this.char2Unicode(char).substring(2).toLowerCase();
-      const url = "https://glyphwiki.org/glyph/" + code + ".png";
-      return url;
-    },
-    getGwSvgUrl: function (char) {
-      const code = "u" + this.char2Unicode(char).substring(2).toLowerCase();
-      const url = "https://glyphwiki.org/glyph/" + code + ".svg";
-      return url;
-    },
-    async copyToClipboard (char) {
-      let toPaste = "";
-      let xmlUnicode=this.char2Unicode(char)
-      switch (this.pasteData) {
-        case "character":
-          toPaste = char;
-          break;
-        case "unicode":
-          toPaste = this.char2Unicode(char);
-          break;
-        case "tei":
-          toPaste = this.xmlBlock;
-          xmlUnicode = xmlUnicode.replace('U+',"u")
-          toPaste = toPaste.replaceAll("[[unicode]]", xmlUnicode);
-          toPaste = toPaste.replaceAll("[[IDS]]", this.getIDS(char));
-          toPaste = toPaste.replaceAll("[[character]]", char);
-          toPaste = toPaste.replaceAll(
-            "[[GlyphWikiPNG]]",
-            this.getGwPngUrl(char)
-          );
-          toPaste = toPaste.replaceAll('[[GlyphWikiSVG', this.getGwSvgUrl(char))
-      }
-      await navigator.clipboard.writeText(toPaste).catch((e) => {
-        console.error(e);
-      });
-      this.$buefy.toast.open({
-        message: "コピーしました！",
-        type: "is-success",
-      });
-    },
-    saveXmlBlock() {},
   },
 };
 </script>
