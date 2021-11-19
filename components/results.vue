@@ -43,7 +43,8 @@
             </div>
 
             <div class="content">
-              <p class="subtitle is-7">画数：{{ result.stroke }}</p>
+              <p>画数：{{ result.stroke }}</p>
+              <p>字体関連：{{getStandard(result.char)}}</p>
             </div>
           </div>
         </div>
@@ -81,9 +82,9 @@ export default {
     },
     getStandard(char) {
       if(this.variants[char] == undefined){
-        return "hoge"
+        return "X"
       }else{
-        return this.variants[char].join()
+        return this.variants[char].join('')
       }
     },
     async copyToClipboard(char) {
