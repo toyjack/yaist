@@ -6,7 +6,8 @@
       aria-label="main navigation"
     >
       <div class="navbar-brand">
-        <a class="navbar-item" href="/"> HIIDSS(Hi-IDS-Search) </a>
+        <!-- <a class="navbar-item" href="/"> HIIDS </a> -->
+        <a class="navbar-item" href="/"> YAIST(Yet Another Ids Search Tool) </a>
 
         <div class="navbar-burger">
           <span />
@@ -16,10 +17,33 @@
       </div>
       <div class="navbar-menu">
         <div class="navbar-end">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> Lang </a>
+
+            <div class="navbar-dropdown">
+              <nuxt-link :to="switchLocalePath('zh-cn')"
+                ><a class="navbar-item"> 中文 </a></nuxt-link
+              >
+              <nuxt-link :to="switchLocalePath('ja')"
+                ><a class="navbar-item"> 日本語 </a></nuxt-link
+              >
+              <nuxt-link :to="switchLocalePath('en')"
+                ><a class="navbar-item"> English </a></nuxt-link
+              >
+              
+              <!-- <nuxt-link :to="switchLocalePath('zh-cn')"
+                ><a class="navbar-item"> Simplified Chinese </a></nuxt-link
+              > -->
+              
+
+              <!-- <hr class="navbar-divider" />
+              <a class="navbar-item"> Report an issue </a> -->
+            </div>
+          </div>
           <div class="navbar-item">
             <div class="buttons">
               <div class="button" @click="isManualShow = !isManualShow">
-                説明
+                {{ $t("label.manual") }}
               </div>
             </div>
           </div>

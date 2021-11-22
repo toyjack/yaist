@@ -1,8 +1,8 @@
 <template>
   <section class="section">
-    <div class="divider">結果数：{{ sorted_results.length }}</div>
+    <div class="divider">{{$t('label.numberOfResults')}} {{ sorted_results.length }}</div>
     <div class="columns is-multiline">
-      <div class="column is-3" v-for="result of sorted_results">
+      <div class="column is-3" v-for="result of sorted_results" :key="result.char">
         <div class="card">
           <div class="card-image" @click="copyToClipboard(result.char)">
             <b-image
@@ -43,8 +43,8 @@
             </div>
 
             <div class="content">
-              <p>画数：{{ result.stroke }}</p>
-              <p>字体関連：{{getStandard(result.char)}}</p>
+              <p>{{$t('label.totalStrokes')}}：{{ result.stroke }}</p>
+              <p>{{$t('label.relatedChar')}}：{{getStandard(result.char)}}</p>
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default {
         console.error(e);
       });
       this.$buefy.toast.open({
-        message: "コピーしました！",
+        message: $t('message.copied'),
         type: "is-success",
       });
     },

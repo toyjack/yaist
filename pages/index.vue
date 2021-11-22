@@ -3,7 +3,7 @@
     <div class="column is-one-quarter">
       <section class="section">
         <div class="field">
-          <label for="searchterm" class="label">検索内容</label>
+          <label for="searchterm" class="label">{{ $t("label.searchLabel") }}</label>
           <div class="control">
             <input
               type="text"
@@ -17,22 +17,22 @@
 
         <div class="buttons is-right">
           <b-button type="is-danger" @click="decompose" :loading="loadingIDS">
-            分解
+            {{$t('button.decompose')}}
           </b-button>
-          <button class="button is-primary" @click="search">検索</button>
+          <button class="button is-primary" @click="search">{{ $t("button.search")}}</button>
         </div>
       </section>
 
       <section class="section">
         <div class="field">
-          <label for="" class="label">結果順序</label>
+          <label for="" class="label">{{$t('label.sortby')}}</label>
           <b-field>
             <b-radio
               v-model="sortStyle"
               name="sortStyle"
               native-value="byUnicode"
             >
-              Unicode順
+              {{$t('option.byunicode')}}
             </b-radio>
           </b-field>
           <b-field>
@@ -41,7 +41,7 @@
               name="sortStyle"
               native-value="byStrokes"
             >
-              画数順
+             {{$t('option.bystrokecount')}}
             </b-radio>
           </b-field>
         </div>
@@ -49,14 +49,14 @@
 
       <section class="section">
         <div class="field">
-          <label for="" class="label">ペーストデータ</label>
+          <label for="" class="label">{{$t('label.toPaste')}}</label>
           <b-field>
             <b-radio
               v-model="pasteData"
               name="pasteData"
               native-value="character"
             >
-              文字符号
+              {{$t('option.pasteCharacter')}}
             </b-radio>
           </b-field>
 
@@ -66,12 +66,12 @@
               name="pasteData"
               native-value="unicode"
             >
-              Unicodeスカラ値
+              {{$t('option.pasteUnicode')}}
             </b-radio>
           </b-field>
           <b-field>
             <b-radio v-model="pasteData" name="pasteData" native-value="tei">
-              TEIブロック
+              {{$t('option.pasteTemplate')}}
             </b-radio>
           </b-field>
         </div>
@@ -79,13 +79,13 @@
 
       <section>
         <b-taglist attached>
-          <b-tag type="is-dark">正字情報</b-tag>
-          <b-tag type="is-success" v-if="!loadingVariants">OK</b-tag>
-          <b-tag type="is-danger" v-else>Loading</b-tag>
+          <b-tag type="is-dark">{{$t('label.relatedCharLoaded')}}</b-tag>
+          <b-tag type="is-success" v-if="!loadingVariants">{{$t('label.ok')}}</b-tag>
+          <b-tag type="is-danger" v-else>{{$t('label.loading')}}</b-tag>
         </b-taglist>
         <div class="buttons">
           <b-button
-            label="TEIブロックをカスタマイズ"
+            :label="$t('label.changeTemplate')"
             type="is-dark"
             @click="isShowXmlCustomize = !isShowXmlCustomize"
           />
@@ -95,8 +95,8 @@
           trap-focus
           aria-role="dialog"
           has-modal-card
-          aria-label="XMLテンプレート"
-          close-button-aria-label="閉じる"
+          :aria-label="$t('label.customTemplate')"
+          close-button-aria-label="X"
           aria-modal
         >
           <xml-customize
