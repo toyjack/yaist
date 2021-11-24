@@ -1,19 +1,16 @@
 <template>
-  <section class="section">
+  <div class="section">
     <div class="divider">
-      {{ $t("label.numberOfResults") }} {{ sorted_results.length }}
+      <!-- {{ $t("label.numberOfResults") }} {{ sorted_results.length }} -->
+      入力した部品：{{terms.length}}
     </div>
     <div class="columns is-multiline">
-      <div
-        class="column is-3"
-        v-for="result of sorted_results"
-        :key="result.char"
-      >
+      <div class="column is-3" v-for="term of terms" :key="term">
         <div class="card">
-          <div class="card-image" @click="copyToClipboard(result.char)">
+          <div class="card-image" @click="copyToClipboard(term)">
             <b-image
               class="is-clickable"
-              :src="getGwSvgUrl(result.char)"
+              :src="getGwSvgUrl(term)"
               ratio="1by1"
               lazy
               placeholder="gazou"
@@ -24,7 +21,7 @@
               <div class="media-left">
                 <figure class="image is-32x32">
                   <span class="is-size-2">
-                    {{ result.char }}
+                    {{ term }}
                   </span>
                 </figure>
               </div>
@@ -33,31 +30,31 @@
                   <a
                     :href="
                       'https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=' +
-                      result.char
+                      term
                     "
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {{ char2Unicode(result.char) }}
+                    {{ char2Unicode(term) }}
                   </a>
                 </p>
 
                 <p class="subtitle is-7">
-                  {{ getUnicodeBlock(result.char) }}
+                  {{ getUnicodeBlock(term) }}
                 </p>
               </div>
             </div>
 
             <div class="content">
-              {{ $t("label.totalStrokes") }}：{{ result.stroke }}
+              {{ $t("label.totalStrokes") }}：{{ getTotalStrokes(term) }}
               <br />
-              {{ $t("label.relatedChar") }}：{{ getStandard(result.char) }}
+              {{ $t("label.relatedChar") }}：{{ getStandard(term) }}
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -67,15 +64,12 @@ import {
   getGwSvgUrl,
   getGwPngUrl,
 } from "../utils/helper";
+import { getTotalStrokes } from "idsfind";
 
 export default {
-  data() {
-    return {
-      isComponentModalActive: false,
-    };
-  },
-  props: ["sorted_results", "pasteType", "xmlTemplate", "idsData", "variants"],
+  props: ["terms", "pasteType", "xmlTemplate", "idsData", "variants"],
   methods: {
+    getTotalStrokes: getTotalStrokes,
     getGwSvgUrl: getGwSvgUrl,
     char2Unicode: char2Unicode,
     getUnicodeBlock: getUnicodeBlock,
