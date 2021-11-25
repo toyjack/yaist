@@ -181,12 +181,13 @@ export default {
 　</figure>
 </glyph>`;
       const xmlid= "u" + char2Unicode(char).substring(2).toLowerCase()+'-'+"u" + ivs.toLowerCase()
+      const char_ivs=char+String.fromCodePoint(parseInt('0x'+ivs,16))
       let toPaste= template
       toPaste = toPaste.replaceAll("[[xmlid]]", xmlid);
       toPaste = toPaste.replaceAll("[[IDS]]", this.getIDS(char));
-      toPaste = toPaste.replaceAll("[[character]]", char);
-      toPaste = toPaste.replaceAll("[[standard]]", this.getStandard(char));
-      toPaste = toPaste.replaceAll("[[GlyphWikiPng", this.getIvsGlyphWikiSvg(char,ivs));
+      toPaste = toPaste.replaceAll("[[CHAR]]", char_ivs);
+      toPaste = toPaste.replaceAll("[[STANDARD]]", this.getStandard(char));
+      toPaste = toPaste.replaceAll("[[GlyphWikiPng]]", this.getIvsGlyphWikiSvg(char,ivs));
       navigator.clipboard.writeText(toPaste).catch((e) => {
         console.error(e);
       });
