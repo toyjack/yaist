@@ -39,11 +39,42 @@
       </div>
 
       <div class="content">
-        {{ $t("label.totalStrokes") }}：{{   getTotalStrokes(result) }}
+        {{ $t("label.totalStrokes") }}：{{ getTotalStrokes(result) }}
         <br />
         {{ $t("label.relatedChar") }}：{{ getStandard(result) }}
       </div>
     </div>
+    <footer class="card-footer">
+      <a
+        class="card-footer-item"
+        v-if="ifHasIvs(result)"
+        @click="getIvs(result)"
+        >IVS</a
+      >
+      <b-modal v-model="ifIvsPanel">
+        <div class="columns is-multiline">
+          <div class="column is-3" v-for="ivs of ivsList" :key="ivs">
+            <div class="card">
+              <div class="card-image">
+                <a class="image is-4by3" @click="copyIvs(result,ivs)">
+                  <img
+                    :src="getIvsGlyphWikiSvg(result, ivs)"
+                    alt="Placeholder image"
+                  />
+                </a>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  {{ ivs }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </b-modal>
+      <!-- <a class="card-footer-item">Edit</a>
+      <a class="card-footer-item">Delete</a> -->
+    </footer>
   </div>
 </template>
 
@@ -56,21 +87,30 @@ import {
   getGwPngUrl,
 } from "../utils/helper";
 
-export default{
-  props:['result'],
-  computed:{
-    pasteType(){
+export default {
+  props: ["result"],
+  data() {
+    return {
+      ifIvsPanel: false,
+      ivsList: [],
+    };
+  },
+  computed: {
+    pasteType() {
       return this.$store.state.settings.pasteType;
     },
-    template(){
+    template() {
       return this.$store.state.settings.template;
     },
-    idsData(){
+    idsData() {
       return this.$store.state.ids.data;
     },
-    variants(){
+    variants() {
       return this.$store.state.variants.data;
-    }
+    },
+    ivd() {
+      return this.$store.state.ivd.data;
+    },
   },
   methods: {
     getTotalStrokes: getTotalStrokes,
@@ -131,7 +171,63 @@ export default{
         type: "is-success",
       });
     },
+    copyIvs(char, ivs) {
+      const template = `<glyph xml:id="[[xmlid]]">
+　<mapping type="IDS">[[IDS]]</mapping>
+　<mapping type="Unicode">[[CHAR]]</mapping>
+　<mapping type="alt">[[STANDARD]]</mapping>
+　<figure>
+　　<graphic url="[[GlyphWikiPng]]"/>
+　</figure>
+</glyph>`;
+      const xmlid= "u" + char2Unicode(char).substring(2).toLowerCase()+'-'+"u" + ivs.toLowerCase()
+      let toPaste= template
+      toPaste = toPaste.replaceAll("[[xmlid]]", xmlid);
+      toPaste = toPaste.replaceAll("[[IDS]]", this.getIDS(char));
+      toPaste = toPaste.replaceAll("[[character]]", char);
+      toPaste = toPaste.replaceAll("[[standard]]", this.getStandard(char));
+      toPaste = toPaste.replaceAll("[[GlyphWikiPng", this.getIvsGlyphWikiSvg(char,ivs));
+      navigator.clipboard.writeText(toPaste).catch((e) => {
+        console.error(e);
+      });
+      this.$buefy.toast.open({
+        message: this.$t("message.copied"),
+        type: "is-success",
+      });
+    },
+    getIvs(char) {
+      this.ivsList = [];
+      const code = char2Unicode(char).substring(2).toUpperCase();
+      if (this.ivd[code] === undefined) {
+        return false;
+      } else {
+        this.ifIvsPanel = true;
+        this.ivsList = this.ivd[code];
+        return true;
+      }
+    },
+    getIvsGlyphWikiSvg(char, ivs) {
+      const code = "u" + char2Unicode(char).substring(2).toLowerCase();
+      const selector = "u" + ivs.toLowerCase();
+      const url =
+        "https://glyphwiki.org/glyph/" + code + "-" + selector + ".svg";
+      return url;
+    },
+    getIvsGlyphWikiPng(char, ivs) {
+      const code = "u" + char2Unicode(char).substring(2).toLowerCase();
+      const selector = "u" + ivs.toLowerCase();
+      const url =
+        "https://glyphwiki.org/glyph/" + code + "-" + selector + ".png";
+      return url;
+    },
+    ifHasIvs(char) {
+      const code = char2Unicode(char).substring(2).toUpperCase();
+      if (this.ivd[code] === undefined) {
+        return false;
+      } else {
+        return true;
+      }
+    },
   },
-}
-
+};
 </script>
