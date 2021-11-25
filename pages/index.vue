@@ -1,6 +1,6 @@
 <template>
   <div class="columns">
-    <div class="column is-one-quarter">
+    <div class="menu column is-one-quarter">
       <section class="section">
         <div class="field">
           <label for="searchterm" class="label">{{
@@ -56,8 +56,8 @@
           <label for="" class="label">{{ $t("label.toPaste") }}</label>
           <b-field>
             <b-radio
-              v-model="pasteData"
-              name="pasteData"
+              v-model="pasteType"
+              name="pasteType"
               native-value="character"
             >
               {{ $t("option.pasteCharacter") }}
@@ -66,15 +66,15 @@
 
           <b-field>
             <b-radio
-              v-model="pasteData"
-              name="pasteData"
+              v-model="pasteType"
+              name="pasteType"
               native-value="unicode"
             >
               {{ $t("option.pasteUnicode") }}
             </b-radio>
           </b-field>
           <b-field>
-            <b-radio v-model="pasteData" name="pasteData" native-value="tei">
+            <b-radio v-model="pasteType" name="pasteType" native-value="tei">
               {{ $t("option.pasteTemplate") }}
             </b-radio>
           </b-field>
@@ -105,36 +105,21 @@
           close-button-aria-label="X"
           aria-modal
         >
-          <xml-customize
-            :xml-template.sync="xmlBlock"
-            @close="isShowXmlCustomize = false"
-          />
+          <xml-customize @close="isShowXmlCustomize = false" />
         </b-modal>
       </section>
     </div>
 
     <div class="column">
-      <Terms
-        :terms="termList"
-        :pasteType="pasteData"
-        :xmlTemplate="xmlBlock"
-        :idsData="ids"
-        :variants="variants"
-      />
-      <Results
-        :sorted_results="sorted_results"
-        :pasteType="pasteData"
-        :xmlTemplate="xmlBlock"
-        :idsData="ids"
-        :variants="variants"
-      />
+      <Terms :terms="termList" />
+      <Results :sorted_results="sorted_results" />
     </div>
   </div>
   <!-- end for div.columns -->
 </template>
 
 <script>
-import { idsfind, getTotalStrokes } from "idsfind";
+import { idsfind } from "idsfind";
 import Results from "../components/results.vue";
 import xmlCustomize from "../components/xmlCustomize.vue";
 import Terms from "../components/terms.vue";
@@ -147,16 +132,15 @@ export default {
       term: "",
       results: [],
       sortStyle: "byUnicode",
-      pasteData: "character",
-      ids: {},
       loadingIDS: true,
       isShowXmlCustomize: false,
-      xmlBlock: "",
-      variants: {},
       loadingVariants: true,
     };
   },
   computed: {
+    ids(){
+      return this.$store.state.ids.data;
+    },
     sorted_results: function () {
       switch (this.sortStyle) {
         case "byUnicode":
@@ -171,15 +155,23 @@ export default {
     },
     termList() {
       const terms = Array.from(this.term);
-      let termArr=[]
-      for (let char of terms){
-        if (/\d/.test(char)){
-          continue
-        }else{
-          termArr.push(char)
+      let termArr = [];
+      for (let char of terms) {
+        if (/\d/.test(char)) {
+          continue;
+        } else {
+          termArr.push(char);
         }
       }
       return termArr;
+    },
+    pasteType: {
+      get() {
+        return this.$store.state.settings.pasteType;
+      },
+      set(value) {
+        this.$store.commit("settings/updatePasteType", value);
+      },
     },
   },
   mounted() {
@@ -192,30 +184,25 @@ export default {
     </figure>
 </glyph>
 `;
-    this.fetchIDS();
-    this.fetchVariants();
+    this.$store.commit("settings/updateTemplate", this.xmlBlock);
+    this.fetchData();
   },
   methods: {
-    getTotalStrokes: getTotalStrokes,
-    async fetchIDS() {
+    async fetchData() {
+      const ivd = await this.$axios.get("/IVD_Sequences.txt");
+      this.$store.commit("ivd/load", ivd);
+
       const ids = await this.$axios.$get("/cjkvi_ids.txt");
-      this.ids = ids;
+      this.$store.commit("ids/load", ids);
       this.loadingIDS = false;
-    },
-    async fetchVariants() {
+
       const variants = await this.$axios.$get("/variants.json");
-      this.variants = variants;
+      this.$store.commit("variants/load", variants);
       this.loadingVariants = false;
     },
+
     search() {
-      this.results = [];
-      let temp_results = idsfind(this.term, false);
-      for (let char of temp_results) {
-        this.results.push({
-          char: char,
-          stroke: this.getTotalStrokes(char),
-        });
-      }
+      this.results = idsfind(this.term, false);
     },
     decompose() {
       let char = Array.from(this.term)[0];
@@ -236,4 +223,20 @@ export default {
 
 <style lang="css">
 @import "@creativebulma/bulma-divider";
+
+.menu {
+  position: sticky;
+  display: inline-block;
+  vertical-align: top;
+  max-height: 100vh;
+  overflow-y: auto;
+  width: 200px;
+  top: 0;
+  bottom: 0;
+  padding: 30px;
+}
+
+.content {
+  display: inline-block;
+}
 </style>
