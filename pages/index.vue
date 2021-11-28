@@ -178,7 +178,7 @@ export default {
     this.xmlBlock = `<glyph xml:id="[[unicode]]">
     <mapping type="IDS">[[IDS]]</mapping>
     <mapping type="Unicode">[[character]]</mapping>
-    <mapping type="standard">[[standard]]</mapping>
+    <mapping type="alt">[[standard]]</mapping>
     <figure>
         <graphic url="[[GlyphWikiPNG]]"/>
     </figure>
