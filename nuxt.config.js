@@ -69,7 +69,7 @@ export default {
             relatedCharLoaded:'正字情報',
             ok:'OK',
             loading:'Loading',
-            changeTemplate:'テンプレートをカスタマイズ',
+            changeTemplate:'設定',
             relatedChar:"関連漢字",
           },
           button:{
@@ -102,7 +102,7 @@ export default {
             relatedCharLoaded:'Related Characters Data',
             ok:'OK',
             loading:'Loading',
-            changeTemplate:'Modify template',
+            changeTemplate:'Settings',
           },
           button:{
             search:'Search',
@@ -134,7 +134,7 @@ export default {
             relatedCharLoaded:'相关汉字数据',
             ok:'读取完成',
             loading:'读取中',
-            changeTemplate:'修改模板',
+            changeTemplate:'设置',
           },
           button:{
             search:'查找',

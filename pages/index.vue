@@ -89,24 +89,6 @@
           }}</b-tag>
           <b-tag type="is-danger" v-else>{{ $t("label.loading") }}</b-tag>
         </b-taglist>
-        <div class="buttons">
-          <b-button
-            :label="$t('label.changeTemplate')"
-            type="is-dark"
-            @click="isShowXmlCustomize = !isShowXmlCustomize"
-          />
-        </div>
-        <b-modal
-          v-model="isShowXmlCustomize"
-          trap-focus
-          aria-role="dialog"
-          has-modal-card
-          :aria-label="$t('label.customTemplate')"
-          close-button-aria-label="X"
-          aria-modal
-        >
-          <xml-customize @close="isShowXmlCustomize = false" />
-        </b-modal>
       </section>
     </div>
 
@@ -121,19 +103,17 @@
 <script>
 import { idsfind } from "idsfind";
 import Results from "../components/results.vue";
-import xmlCustomize from "../components/xmlCustomize.vue";
 import Terms from "../components/terms.vue";
 
 export default {
   name: "HomePage",
-  components: { Results, Terms, xmlCustomize },
+  components: { Results, Terms,  },
   data() {
     return {
       term: "",
       results: [],
       sortStyle: "byUnicode",
       loadingIDS: true,
-      isShowXmlCustomize: false,
       loadingVariants: true,
     };
   },
