@@ -26,7 +26,7 @@
           </button>
         </div>
         <b-field>
-            <b-checkbox v-model="ifDeeply">Deeply</b-checkbox>
+          <b-checkbox v-model="ifDeeply">Deeply</b-checkbox>
         </b-field>
       </section>
 
@@ -107,11 +107,11 @@
 import { idsfind } from "idsfind";
 import Results from "../components/results.vue";
 import Terms from "../components/terms.vue";
-import {uniq} from 'lodash'
+import { uniq } from "lodash";
 
 export default {
   name: "HomePage",
-  components: { Results, Terms,  },
+  components: { Results, Terms },
   data() {
     return {
       term: "",
@@ -123,7 +123,7 @@ export default {
     };
   },
   computed: {
-    ids(){
+    ids() {
       return this.$store.state.ids.data;
     },
     sorted_results: function () {
@@ -186,13 +186,30 @@ export default {
       this.loadingVariants = false;
     },
 
-    async search() {
-      this.results = []
+    search() {
+      this.results = [];
       this.$buefy.toast.open({
-        message:'検索を実行します...',
-        type: 'is-info',
-        })
-      this.results = uniq(idsfind(this.term, this.ifDeeply));
+        message: "検索を実行します...",
+        type: "is-info",
+      });
+      let results = uniq(idsfind(this.term, this.ifDeeply));
+      this.updateData(results);
+    },
+    updateData(data) {
+      if (!data.length) {
+        this.$buefy.toast.open({
+          message: "検索は完了しました",
+          type: "is-info",
+        });
+        return;
+      }
+
+      // 我们把数据切割成十份进行批次渲染
+      requestAnimationFrame(async () => {
+        const num = 100;
+        this.results.push(...data.slice(0, num));
+        this.updateData(data.slice(num));
+      });
     },
     decompose() {
       let char = Array.from(this.term)[0];
