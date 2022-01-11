@@ -107,6 +107,7 @@
 import { idsfind } from "idsfind";
 import Results from "../components/results.vue";
 import Terms from "../components/terms.vue";
+import {uniq} from 'lodash'
 
 export default {
   name: "HomePage",
@@ -185,8 +186,13 @@ export default {
       this.loadingVariants = false;
     },
 
-    search() {
-      this.results = idsfind(this.term, this.ifDeeply);
+    async search() {
+      this.results = []
+      this.$buefy.toast.open({
+        message:'検索を実行します...',
+        type: 'is-info',
+        })
+      this.results = uniq(idsfind(this.term, this.ifDeeply));
     },
     decompose() {
       let char = Array.from(this.term)[0];
