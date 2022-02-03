@@ -75,6 +75,7 @@ export default {
           button:{
             search:'検索',
             decompose:'分解',
+            ifDeeply:'深層検索',
           },
           option:{
             byunicode:'Unicode順',
@@ -107,6 +108,7 @@ export default {
           button:{
             search:'Search',
             decompose:'Decompose',
+            ifDeeply:'Deeply',
           },
           option:{
             byunicode:'By Unicode',
@@ -139,6 +141,7 @@ export default {
           button:{
             search:'查找',
             decompose:'分解',
+            ifDeeply:'深层查找',
           },
           option:{
             byunicode:'统一码编号',

@@ -7,7 +7,7 @@
     >
       <div class="navbar-brand">
         <!-- <a class="navbar-item" href="/"> HIIDS </a> -->
-        <a class="navbar-item" href="/"> YAIST(Yet Another Ids Search Tool) </a>
+        <a class="navbar-item" href="/"> YAIST(Yet Another IDS Search Tool) </a>
 
         <div class="navbar-burger">
           <span />

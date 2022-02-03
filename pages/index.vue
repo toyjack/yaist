@@ -12,7 +12,7 @@
               class="input"
               id="searchterm"
               v-model.trim="term"
-              @keyup.enter="search"
+              @keydown.enter="search"
             />
           </div>
         </div>
@@ -26,7 +26,7 @@
           </button>
         </div>
         <b-field>
-          <b-checkbox v-model="ifDeeply">Deeply</b-checkbox>
+          <b-checkbox v-model="ifDeeply">{{$t("button.ifDeeply")}}</b-checkbox>
         </b-field>
       </section>
 
@@ -187,7 +187,8 @@ export default {
     },
 
     search() {
-      this.results = [];
+      // this.results = [];
+      this.results.splice(0)
       this.$buefy.toast.open({
         message: "検索を実行します...",
         type: "is-info",
@@ -203,8 +204,6 @@ export default {
         });
         return;
       }
-
-      // 我们把数据切割成十份进行批次渲染
       requestAnimationFrame(async () => {
         const num = 100;
         this.results.push(...data.slice(0, num));
