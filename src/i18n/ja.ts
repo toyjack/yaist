@@ -1,0 +1,33 @@
+export default {
+  label:{
+    searchLabel:'検索部品画数',
+    sortby:'結果順序',
+    toPaste:'コピー内容',
+    customTemplate:'XMLテンプレート',
+    templateField:'TEIブロックのテンプレート',
+    save:'保存',
+    numberOfResults:'結果数：',
+    totalStrokes:'画数',
+    manual:'説明',
+    relatedCharLoaded:'正字情報',
+    ok:'OK',
+    loading:'Loading',
+    changeTemplate:'設定',
+    relatedChar:"関連漢字",
+  },
+  button:{
+    search:'検索',
+    decompose:'分解',
+    ifDeeply:'深層検索',
+  },
+  option:{
+    byunicode:'Unicode順',
+    bystrokecount:'画数順',
+    pasteCharacter:'文字符号',
+    pasteUnicode:'Unicodeスカラ値',
+    pasteTemplate:'テンプレート',
+  },
+  message:{
+    copied:'コピーしました！',
+  },
+}
