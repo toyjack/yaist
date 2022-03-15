@@ -32,7 +32,7 @@ function changeLocale(lang: string) {
         <!-- <q-avatar>
           <img src="/icon.png" />
         </q-avatar>-->
-        YASIT 
+        YASIT (Yet Another IDS Search Tool)
       </q-toolbar-title>
       <q-btn flat round dense icon="translate" class="q-mr-xs">
         <q-menu>
