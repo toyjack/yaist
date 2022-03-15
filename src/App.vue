@@ -3,9 +3,9 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ref, reactive } from "vue";
 import { useI18n } from "vue-i18n";
-import {storeToRefs} from "pinia"
+import { storeToRefs } from "pinia"
 import { fetch } from "./fetch"
-import {useStore} from "./stores/settings"
+import { useStore } from "./stores/settings"
 
 import ResultCard from "./components/ResultCard.vue";
 import Header from './components/Header.vue'
@@ -14,7 +14,7 @@ import RightDrawer from "./components/RightDrawer.vue";
 
 const { t } = useI18n({ useScope: "global" });
 const settings = useStore()
-const {sortType, copyType} = storeToRefs(settings)
+const { sortType, copyType } = storeToRefs(settings)
 
 const sort_options = reactive([
   {
@@ -53,13 +53,20 @@ const isLoading = ref(false)
 const search = async () => {
   results.value = [];
   isLoading.value = true
-  const { isFetching, error, data } = await fetch("/search/" + searching_parts.value).get().json()
+  const { isFetching, error, data } = await fetch("/search/ids/" + searching_parts.value).get().json()
   if (error.value) console.log(error.value)
-  console.log(sortType.value, copyType.value)
   for (const ele of data.value) {
-    results.value.push(ele);
+    console.log(ele)
+    let temp = {
+      hanzi: ele,
+      strokes:0
+    }
+    const { isFetching, error, data } = await fetch("/search/strokes/" + ele).get().json()
+    temp["strokes"]=Number(data.value["stroke"])
+    console.log(temp)
+    results.value.push(temp)
   }
-  isLoading.value=false
+  isLoading.value = false
 };
 
 </script>
@@ -81,28 +88,25 @@ const search = async () => {
                 </div>
                 <div class="col q-gutter-md self-end">
                   <q-btn color="white" text-color="black" :label="$t('button.decompose')" disable />
-                  <q-btn color="primary" :label="$t('button.search')" :loading="isLoading" @click="search" />
+                  <q-btn
+                    color="primary"
+                    :label="$t('button.search')"
+                    :loading="isLoading"
+                    @click="search"
+                  />
                 </div>
                 <q-space />
                 <div class="col">
                   <div class="q-pa-md">
                     {{ $t("label.sortby") }}
-                    <q-option-group
-                      :options="sort_options"
-                      type="radio"
-                      v-model="sortType"
-                    />
+                    <q-option-group :options="sort_options" type="radio" v-model="sortType" />
                   </div>
                 </div>
                 <q-space></q-space>
                 <div class="col">
                   <div class="q-pa-md">
                     {{ $t("label.toPaste") }}
-                    <q-option-group
-                      :options="copy_options"
-                      type="radio"
-                      v-model="copyType"
-                    />
+                    <q-option-group :options="copy_options" type="radio" v-model="copyType" />
                   </div>
                 </div>
               </div>
@@ -111,7 +115,7 @@ const search = async () => {
           <div class="col-12 col-md-10">
             <div class="row wrap q-gutter-md q-ma-md">
               <div class="col-2" v-for="item of results" :key="item">
-                <ResultCard :hanzi="item" />
+                <ResultCard :hanzi="item.hanzi" :strokes="item.strokes"/>
               </div>
             </div>
           </div>
@@ -121,5 +125,4 @@ const search = async () => {
 
     <Footer />
   </q-layout>
-    
 </template>

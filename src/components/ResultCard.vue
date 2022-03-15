@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { defineProps } from "vue"
+import { defineProps, ref } from "vue"
 import { useI18n } from "vue-i18n"
 import { useQuasar } from 'quasar'
 import { useClipboard } from '@vueuse/core'
 import { useStore } from "../stores/settings"
+import { fetch } from "../fetch"
+
 
 const { t } = useI18n({ useScope: "global" });
 const $q = useQuasar()
@@ -11,8 +13,15 @@ const settings = useStore()
 
 const { text, isSupported, copy } = useClipboard()
 
-const props = defineProps({ hanzi: String, })
-const code = props.hanzi.codePointAt(0).toString(16)
+const props = defineProps({ hanzi: String, strokes: Number })
+const hanzi = ref("")
+const strokes = ref(0)
+if (props.hanzi) {
+  hanzi.value = props.hanzi
+}
+if (props.strokes) strokes.value = props.strokes
+
+const code = hanzi.value.codePointAt(0).toString(16)
 const glyphUrl = "https://glyphwiki.org/glyph/u" + code + ".svg"
 const overline = "U+" + code.toUpperCase()
 
@@ -56,7 +65,7 @@ function copyCard() {
     <q-card-section>
       <div class="text-overline text-orange-9">{{ overline }}</div>
       <div class="text-h5 q-mt-sm q-mb-xs">{{ hanzi }}</div>
-      <div class="text-caption text-grey">{{ code }}</div>
+      <div class="text-caption text-grey">{{$t("label.totalStrokes")}}: {{ props.strokes }}</div>
     </q-card-section>
 
     <q-card-actions>
