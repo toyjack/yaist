@@ -49,6 +49,7 @@ const copy_options = reactive([
 const searching_parts = ref("土口王");
 const results = ref([]);
 const isLoading = ref(false)
+const decomposeIsLoading = ref(false)
 
 const search = async () => {
   results.value = [];
@@ -59,15 +60,25 @@ const search = async () => {
     console.log(ele)
     let temp = {
       hanzi: ele,
-      strokes:0
+      strokes: 0
     }
     const { isFetching, error, data } = await fetch("/search/strokes/" + ele).get().json()
-    temp["strokes"]=Number(data.value["stroke"])
+    temp["strokes"] = Number(data.value["stroke"])
     console.log(temp)
     results.value.push(temp)
   }
   isLoading.value = false
-};
+}
+
+const decompose = async ()=> {
+  if(searching_parts.value){
+    decomposeIsLoading.value=true
+    const hanzi = searching_parts.value[0]
+    const { isFetching, error, data } = await fetch("/search/cjkvi/" + hanzi).get().json()
+    searching_parts.value=data.value.ids.replace(/[\t⿰-⿿]|\[[^\]]+\]/g, "")
+    decomposeIsLoading.value=false
+  }
+}
 
 </script>
 
@@ -87,7 +98,7 @@ const search = async () => {
                   <q-input outlined v-model="searching_parts" :label="$t('label.searchLabel')" />
                 </div>
                 <div class="col q-gutter-md self-end">
-                  <q-btn color="white" text-color="black" :label="$t('button.decompose')" disable />
+                  <q-btn color="white" text-color="black" :label="$t('button.decompose')" @click="decompose()" />
                   <q-btn
                     color="primary"
                     :label="$t('button.search')"
@@ -115,7 +126,7 @@ const search = async () => {
           <div class="col-12 col-md-10">
             <div class="row wrap q-gutter-md q-ma-md">
               <div class="col-2" v-for="item of results" :key="item">
-                <ResultCard :hanzi="item.hanzi" :strokes="item.strokes"/>
+                <ResultCard :hanzi="item.hanzi" :strokes="item.strokes" />
               </div>
             </div>
           </div>
