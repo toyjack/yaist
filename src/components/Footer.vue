@@ -10,7 +10,7 @@
           </q-avatar>
           <div class="row">
             <div class="col self-start">YAIST</div>
-            <div class="col self-center">© 2022 Guanwei Liu</div>
+            <div class="col self-center">© 2022 Guanwei LIU</div>
           </div>
         </q-toolbar-title>
       </q-toolbar>
