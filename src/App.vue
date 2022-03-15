@@ -46,8 +46,8 @@ const copy_options = reactive([
   },
 ]);
 
-const searching_parts = ref("土口王");
-const results = ref([]);
+const searching_parts = ref("");
+const results = ref(<any[]>[]);
 const isLoading = ref(false)
 const decomposeIsLoading = ref(false)
 
