@@ -693,6 +693,16 @@ jstransformer@1.0.0:
     is-promise "^2.0.0"
     promise "^7.0.1"
 
+lodash.combinations@^18.10.0:
+  version "18.10.0"
+  resolved "https://registry.yarnpkg.com/lodash.combinations/-/lodash.combinations-18.10.0.tgz#9b8702b86f090a33cd8a07831809ca2f496b82a9"
+  integrity sha512-r4dZ+29r4KfFaih2W+dAUZXYEI6YSMHTaplM7Int08p4/X4j3hxZRMfzvOHCnTGGEeYFeEHZA3K8p3/S0cSS1Q==
+
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 lru-cache@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"

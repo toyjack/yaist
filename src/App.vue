@@ -14,7 +14,20 @@ import RightDrawer from "./components/RightDrawer.vue";
 
 const { t } = useI18n({ useScope: "global" });
 const settings = useStore()
-const { sortType, copyType } = storeToRefs(settings)
+const { sortType, copyType, searchRange } = storeToRefs(settings)
+
+const search_range_options = reactive([
+  {
+    label: "Unicode",
+    value: "unicode",
+    disable: false,
+  },
+  {
+    label: "GlyphWiki",
+    value: "glyphwiki",
+    disable: false,
+  },
+])
 
 const sort_options = reactive([
   {
@@ -46,37 +59,52 @@ const copy_options = reactive([
   },
 ]);
 
-const searching_parts = ref("");
+const searching_parts = ref("田又");
 const results = ref(<any[]>[]);
 const isLoading = ref(false)
 const decomposeIsLoading = ref(false)
 
 const search = async () => {
-  results.value = [];
-  isLoading.value = true
-  const { isFetching, error, data } = await fetch("/search/ids/" + searching_parts.value).get().json()
-  if (error.value) console.log(error.value)
-  for (const ele of data.value) {
-    console.log(ele)
-    let temp = {
-      hanzi: ele,
-      strokes: 0
+    results.value = [];
+    isLoading.value = true
+  if (searchRange.value == "unicode") {
+    const { isFetching, error, data } = await fetch("/search/ids/" + searching_parts.value).get().json()
+    if (error.value) console.log(error.value)
+    for (const ele of data.value) {
+      // console.log(ele)
+      let temp = {
+        hanzi: ele,
+        strokes: 0
+      }
+      const { isFetching, error, data } = await fetch("/search/strokes/" + ele).get().json()
+      temp["strokes"] = Number(data.value["stroke"])
+      results.value.push(temp)
     }
-    const { isFetching, error, data } = await fetch("/search/strokes/" + ele).get().json()
-    temp["strokes"] = Number(data.value["stroke"])
-    console.log(temp)
-    results.value.push(temp)
+    isLoading.value = false
   }
-  isLoading.value = false
+  if (searchRange.value=="glyphwiki"){
+    const { isFetching, error, data } = await fetch("/search/glyphwiki/" + searching_parts.value).get().json()
+    if (error.value) console.log(error.value)
+    // console.log(data.value)
+    for (const ele of data.value) {
+      let temp = {
+        hanzi: ele,
+        strokes: 0
+      }
+      results.value.push(temp)
+
+    }
+    isLoading.value = false
+  }
 }
 
-const decompose = async ()=> {
-  if(searching_parts.value){
-    decomposeIsLoading.value=true
+const decompose = async () => {
+  if (searching_parts.value) {
+    decomposeIsLoading.value = true
     const hanzi = searching_parts.value[0]
     const { isFetching, error, data } = await fetch("/search/cjkvi/" + hanzi).get().json()
-    searching_parts.value=data.value.ids.replace(/[\t⿰-⿿]|\[[^\]]+\]/g, "")
-    decomposeIsLoading.value=false
+    searching_parts.value = data.value.ids.replace(/[\t⿰-⿿]|\[[^\]]+\]/g, "")
+    decomposeIsLoading.value = false
   }
 }
 
@@ -98,7 +126,12 @@ const decompose = async ()=> {
                   <q-input outlined v-model="searching_parts" :label="$t('label.searchLabel')" />
                 </div>
                 <div class="col q-gutter-md self-end">
-                  <q-btn color="white" text-color="black" :label="$t('button.decompose')" @click="decompose()" />
+                  <q-btn
+                    color="white"
+                    text-color="black"
+                    :label="$t('button.decompose')"
+                    @click="decompose()"
+                  />
                   <q-btn
                     color="primary"
                     :label="$t('button.search')"
@@ -106,14 +139,32 @@ const decompose = async ()=> {
                     @click="search"
                   />
                 </div>
+
                 <q-space />
+
+                <div class="col">
+                  <div class="q-pa-md">
+                    Search Range:
+                    <!-- {{ $t("label.sortby") }} -->
+                    <q-option-group
+                      :options="search_range_options"
+                      type="radio"
+                      v-model="searchRange"
+                    />
+                  </div>
+                </div>
+
+                <q-space />
+
                 <div class="col">
                   <div class="q-pa-md">
                     {{ $t("label.sortby") }}
                     <q-option-group :options="sort_options" type="radio" v-model="sortType" />
                   </div>
                 </div>
-                <q-space></q-space>
+
+                <q-space />
+
                 <div class="col">
                   <div class="q-pa-md">
                     {{ $t("label.toPaste") }}

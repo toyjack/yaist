@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 type SortTypes = 'unicode' | 'stroke'
 type CopyTypes = 'character' | 'code' | 'template'
+type SearchRangeTypes = 'unicode' | 'glyphwiki'
 
 const template =`
 <glyph xml:id="[[unicode]]">
@@ -19,9 +20,10 @@ export const useStore = defineStore('settings', {
   // other options...
   state: () => ({
     rightDrawerOpen: false,
+    searchRange:<SearchRangeTypes>"unicode",
     sortType: <SortTypes>"unicode",
     copyType: <CopyTypes>"character",
-    template:  template
+    template: <string> template
   }),
 
   actions: {
