@@ -16,7 +16,7 @@ const lang_options = reactive([
     value: "en"
   },
   {
-    label: "中文",
+    label: "简体中文",
     value: "zh"
   },
 ])

@@ -14,6 +14,7 @@ export default {
     loading:'Loading',
     changeTemplate:'設定',
     relatedChar:"関連漢字",
+    searchRange:"検索範囲",
   },
   button:{
     search:'検索',
@@ -21,6 +22,8 @@ export default {
     ifDeeply:'深層検索',
   },
   option:{
+    unicode:'Unicode',
+    glyphwiki:'Glyphwiki',
     byunicode:'Unicode順',
     bystrokecount:'画数順',
     pasteCharacter:'文字符号',

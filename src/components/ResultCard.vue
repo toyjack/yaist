@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n"
 import { useQuasar } from 'quasar'
 import { useClipboard } from '@vueuse/core'
 import { useStore } from "../stores/settings"
-import { fetch } from "../fetch"
+import { getUnicodeBlock,gwname2char,gwname2charWithoutIDC } from '../utils/unicode'
 
 
 const { t } = useI18n({ useScope: "global" });
@@ -16,9 +16,7 @@ const { text, isSupported, copy } = useClipboard()
 const props = defineProps({ hanzi: String, strokes: Number })
 const hanzi = ref("")
 const strokes = ref(0)
-if (props.hanzi) {
-  hanzi.value = props.hanzi
-}
+
 if (props.strokes) strokes.value = props.strokes
 
 const searchRange = settings.searchRange
@@ -30,11 +28,16 @@ let lefBtnLabel = ""
 let leftBtnURL = ""
 let rightBtnLabel = ""
 let rightBtnURL = ""
+let rightOverline = ""
 
 if (searchRange == "unicode") {
-  code = hanzi.value.codePointAt(0).toString(16)
+  if (props.hanzi) {
+    hanzi.value = props.hanzi
+  }
+  code = hanzi.value.codePointAt(0)?.toString(16)
   glyphUrl = "https://glyphwiki.org/glyph/u" + code + ".svg"
   overline = "U+" + code.toUpperCase()
+  rightOverline = getUnicodeBlock(props.hanzi)
 
   lefBtnLabel = "Unihan"
   leftBtnURL = "https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=" + props.hanzi
@@ -43,27 +46,19 @@ if (searchRange == "unicode") {
 }
 
 if (searchRange == "glyphwiki") {
+  hanzi.value=gwname2char(props.hanzi)
   code = "0"
-  glyphUrl = "https://glyphwiki.org/glyph/" + hanzi.value + ".svg"
+  glyphUrl = "https://glyphwiki.org/glyph/" + props.hanzi + ".svg"
   overline = "GlyphWiki"
 
   lefBtnLabel = "GlyphWiki"
-  leftBtnURL = "https://glyphwiki.org/wiki/" + hanzi.value 
-  rightBtnLabel ="CHISE"
+  leftBtnURL = "https://glyphwiki.org/wiki/" + props.hanzi
+  rightBtnLabel = "CHISE"
   // TODO: drop idc
-  rightBtnURL = "https://www.chise.org/ids-find?components=" + gwname2char(props.hanzi)
+  rightBtnURL = "https://www.chise.org/ids-find?components=" + gwname2charWithoutIDC(props.hanzi)
 }
 
-function gwname2char(gwname: string) {
-  let results: string[] = []
-  const names = gwname.split('-')
-  for (const name of names) {
-    const code = Number('0x' + name.substring(1, name.length)) // u4e00 -> 4e00 -> 0x4e00 -> 19968
-    const character = String.fromCodePoint(code)
-    results.push(character)
-  }
-  return results
-}
+
 
 
 
@@ -101,11 +96,19 @@ function copyCard() {
   <q-card class="my-card" flat bordered>
     <q-img :src="glyphUrl" @click="copyCard()" />
 
-    <q-card-section>
-      <div class="text-overline text-orange-9">{{ overline }}</div>
-      <div class="text-h5 q-mt-sm q-mb-xs">{{ hanzi }}</div>
-      <div class="text-caption text-grey">{{ $t("label.totalStrokes") }}: {{ props.strokes }}</div>
+    <q-card-section horizontal>
+      <q-card-section class="col-5 text-center">
+        <div class="text-overline text-orange-9">{{ overline }}</div>
+        <div class="text-h5 q-mt-sm q-mb-xs">{{ hanzi }}</div>
+        <div
+          class="text-caption text-grey text-left"
+        >{{ $t("label.totalStrokes") }}: {{ props.strokes }}</div>
+      </q-card-section>
+      <q-card-section>
+        <div class="text-overline text-orange-9">{{ rightOverline }}</div>
+      </q-card-section>
     </q-card-section>
+    <q-separator />
 
     <q-card-actions>
       <div class="row q-gutter-md wrap">

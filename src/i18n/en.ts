@@ -14,6 +14,7 @@ export default {
     ok: 'OK',
     loading: 'Loading',
     changeTemplate: 'Settings',
+    searchRange:"Search Range",
   },
   button: {
     search: 'Search',
@@ -21,6 +22,8 @@ export default {
     ifDeeply: 'Deeply',
   },
   option: {
+    unicode: 'Unicode',
+    glyphwiki: 'Glyphwiki',
     byunicode: 'By Unicode',
     bystrokecount: 'By stroke count',
     pasteCharacter: 'Character',

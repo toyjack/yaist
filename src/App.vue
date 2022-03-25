@@ -18,12 +18,12 @@ const { sortType, copyType, searchRange } = storeToRefs(settings)
 
 const search_range_options = reactive([
   {
-    label: "Unicode",
+    label:  t("option.unicode"),
     value: "unicode",
     disable: false,
   },
   {
-    label: "GlyphWiki",
+    label:  t("option.glyphwiki"),
     value: "glyphwiki",
     disable: false,
   },
@@ -144,8 +144,7 @@ const decompose = async () => {
 
                 <div class="col">
                   <div class="q-pa-md">
-                    Search Range:
-                    <!-- {{ $t("label.sortby") }} -->
+                    {{ $t("label.searchRange") }}
                     <q-option-group
                       :options="search_range_options"
                       type="radio"
