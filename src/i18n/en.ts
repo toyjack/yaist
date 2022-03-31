@@ -14,7 +14,7 @@ export default {
     ok: 'OK',
     loading: 'Loading',
     changeTemplate: 'Settings',
-    searchRange:"Search Range",
+    searchRange: "Search Range",
   },
   button: {
     search: 'Search',
