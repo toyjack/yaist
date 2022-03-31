@@ -4,7 +4,8 @@
 import { ref, reactive } from "vue";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia"
-import { fetch } from "./fetch"
+import { fetch, searchUnicode, searchGlyphwiki, getDecompose } from "./fetch"
+import { searchUnicode as searchUnicodeRDS } from "./fetchRds"
 import { useStore } from "./stores/settings"
 
 import ResultCard from "./components/ResultCard.vue";
@@ -16,14 +17,27 @@ const { t } = useI18n({ useScope: "global" });
 const settings = useStore()
 const { sortType, copyType, searchRange } = storeToRefs(settings)
 
+const api_options = reactive([
+  {
+    label: "Memory",
+    value: "memory",
+    disable: false,
+  },
+  {
+    label: "RDS(MySQL)",
+    value: "mysql",
+    disable: false,
+  },
+])
+
 const search_range_options = reactive([
   {
-    label:  t("option.unicode"),
+    label: t("option.unicode"),
     value: "unicode",
     disable: false,
   },
   {
-    label:  t("option.glyphwiki"),
+    label: t("option.glyphwiki"),
     value: "glyphwiki",
     disable: false,
   },
@@ -63,15 +77,19 @@ const searching_parts = ref("田又");
 const results = ref(<any[]>[]);
 const isLoading = ref(false)
 const decomposeIsLoading = ref(false)
+const api_selected = ref("memory")
 
 const search = async () => {
-    results.value = [];
-    isLoading.value = true
+  results.value = [];
+  isLoading.value = true
   if (searchRange.value == "unicode") {
-    const { isFetching, error, data } = await fetch("/search/ids/" + searching_parts.value).get().json()
-    if (error.value) console.log(error.value)
+    let data = ref("")
+    if (api_selected.value == "memory") {
+      data = await searchUnicode(searching_parts.value)
+    } else {
+      data = await searchUnicodeRDS(searching_parts.value)
+    }
     for (const ele of data.value) {
-      // console.log(ele)
       let temp = {
         hanzi: ele,
         strokes: 0
@@ -82,17 +100,14 @@ const search = async () => {
     }
     isLoading.value = false
   }
-  if (searchRange.value=="glyphwiki"){
-    const { isFetching, error, data } = await fetch("/search/glyphwiki/" + searching_parts.value).get().json()
-    if (error.value) console.log(error.value)
-    // console.log(data.value)
+  if (searchRange.value == "glyphwiki") {
+    const data = await searchGlyphwiki(searching_parts.value)
     for (const ele of data.value) {
       let temp = {
-        hanzi: ele,
+        hanzi: ele, // TODO:
         strokes: 0
       }
       results.value.push(temp)
-
     }
     isLoading.value = false
   }
@@ -102,7 +117,7 @@ const decompose = async () => {
   if (searching_parts.value) {
     decomposeIsLoading.value = true
     const hanzi = searching_parts.value[0]
-    const { isFetching, error, data } = await fetch("/search/cjkvi/" + hanzi).get().json()
+    const data = await getDecompose(hanzi)
     searching_parts.value = data.value.ids.replace(/[\t⿰-⿿]|\[[^\]]+\]/g, "")
     decomposeIsLoading.value = false
   }
@@ -138,6 +153,16 @@ const decompose = async () => {
                     :loading="isLoading"
                     @click="search"
                   />
+                </div>
+
+                <q-space />
+
+                <div class="col">
+                  <div class="q-pa-md">
+                    <!-- {{ $t("label.searchRange") }} -->
+                    API
+                    <q-option-group :options="api_options" type="radio" v-model="api_selected" />
+                  </div>
                 </div>
 
                 <q-space />

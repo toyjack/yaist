@@ -18,19 +18,19 @@ export const fetch = createFetch({
 })
 
 export const searchUnicode = async (query: string) => {
-  const { isFetching, error, data } = await fetch("/search/ids/" + query).get().json()
+  const { isFetching, error, data } = await fetch("/rds-search/" + query).get().json()
   if (error.value) console.log(error.value)
   return data
 }
 
-export const searchGlyphwiki = async (query: string) => {
-  const { isFetching, error, data } = await fetch("/search/glyphwiki/" +query).get().json()
-  if (error.value) console.log(error.value)
-  return data
-}
+// export const searchGlyphwiki = async (query: string) => {
+//   const { isFetching, error, data } = await fetch("/search/glyphwiki/" +query).get().json()
+//   if (error.value) console.log(error.value)
+//   return data
+// }
 
-export const getDecompose = async (query: string) => {
-  const { isFetching, error, data } = await fetch("/search/cjkvi/" + query).get().json()
-  if (error.value) console.log(error.value)
-  return data
-}
+// export const getDecompose = async (query: string) => {
+//   const { isFetching, error, data } = await fetch("/search/cjkvi/" + query).get().json()
+//   if (error.value) console.log(error.value)
+//   return data
+// }
