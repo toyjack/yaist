@@ -171,18 +171,31 @@ export default {
         type: "is-success",
       });
     },
-    copyIvs(char, ivs) {
-      const template = this.template;
-      const xmlid= "u" + char2Unicode(char).substring(2).toLowerCase()+'-'+"u" + ivs.toLowerCase()
-      const char_ivs=char+String.fromCodePoint(parseInt('0x'+ivs,16))
-      let toPaste= template
-      toPaste = toPaste.replaceAll("[[unicode]]", xmlid);
-      toPaste = toPaste.replaceAll("[[IDS]]", this.getIDS(char));
-      toPaste = toPaste.replaceAll("[[character]]", char_ivs);
-      toPaste = toPaste.replaceAll("[[standard]]", this.getStandard(char));
-      toPaste = toPaste.replaceAll("[[GlyphWikiPNG]]", this.getIvsGlyphWikiPng(char, ivs));
-      toPaste = toPaste.replaceAll("[[GlyphWikiSVG]]", this.getIvsGlyphWikiSvg(char, ivs));
-      navigator.clipboard.writeText(toPaste).catch((e) => {
+    async copyIvs(char, ivs) {
+      let toPaste = "";
+      const xmlid = "u" + char2Unicode(char).substring(2).toLowerCase() + '-' + "u" + ivs.toLowerCase()
+      const char_ivs = char + String.fromCodePoint(parseInt('0x' + ivs, 16))
+      switch (this.pasteType) {
+        case "character":
+          toPaste = char_ivs;
+          break;
+        case "unicode":
+          toPaste = xmlid
+          break;
+        case "tei":   
+          toPaste = this.template
+          toPaste = toPaste.replaceAll("[[unicode]]", xmlid);
+          toPaste = toPaste.replaceAll("[[IDS]]", this.getIDS(char));
+          toPaste = toPaste.replaceAll("[[character]]", char_ivs);
+          toPaste = toPaste.replaceAll("[[standard]]", this.getStandard(char));
+          toPaste = toPaste.replaceAll("[[GlyphWikiPNG]]", this.getIvsGlyphWikiPng(char, ivs));
+          toPaste = toPaste.replaceAll("[[GlyphWikiSVG]]", this.getIvsGlyphWikiSvg(char, ivs));
+          break;
+
+      }
+      
+
+      await navigator.clipboard.writeText(toPaste).catch((e) => {
         console.error(e);
       });
       this.$buefy.toast.open({
