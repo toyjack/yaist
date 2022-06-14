@@ -165,7 +165,7 @@ export default {
     <mapping type="Unicode">[[character]]</mapping>
     <mapping type="alt">[[standard]]</mapping>
     <figure>
-        <graphic url="[[GlyphWikiPNG]]"/>
+        <graphic url="[[GlyphWikiSVG]]"/>
     </figure>
 </glyph>
 `;
