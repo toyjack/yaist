@@ -54,8 +54,8 @@
       </div>
     </section>
 
-    <footer class="footer">
-      <div class="content ">
+    <footer class="footer columns is-centered is-vcentered is-mobile">
+      <div class="column is-narrow has-text-centered ">
         <p class="has-text-centered has-text-justified">
           <strong>YAIST</strong> by <a href="https://researchmap.jp/liuguanwei">Guanwei Liu</a>. The source code is
           licensed

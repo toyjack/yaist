@@ -187,7 +187,6 @@ export default {
     },
 
     search() {
-      // this.results = [];
       this.results.splice(0)
       this.$buefy.toast.open({
         message: "検索を実行します...",

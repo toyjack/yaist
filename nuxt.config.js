@@ -66,7 +66,7 @@ export default {
             totalStrokes:'画数',
             relatedChar:'字体関連',
             manual:'説明',
-            relatedCharLoaded:'正字情報',
+            relatedCharLoaded:'関連漢字情報',
             ok:'OK',
             loading:'Loading',
             changeTemplate:'設定',
