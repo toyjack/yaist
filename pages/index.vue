@@ -189,7 +189,7 @@ export default {
     search() {
       this.results.splice(0)
       this.$buefy.toast.open({
-        message: "検索を実行します...",
+        message: this.$t("message.isSearching"),
         type: "is-info",
       });
       let results = uniq(idsfind(this.term, this.ifDeeply));
@@ -198,7 +198,7 @@ export default {
     updateData(data) {
       if (!data.length) {
         this.$buefy.toast.open({
-          message: "検索は完了しました",
+          message: this.$t("message.doneSearching"),
           type: "is-info",
         });
         return;

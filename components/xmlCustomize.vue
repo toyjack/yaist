@@ -5,11 +5,11 @@
       <button type="button" class="delete" @click="$emit('close')" />
     </header>
     <section class="modal-card-body">
-      <p>[[unicode]]は「u4E00」のようなUnicodeスカラ値です。</p>
-      <p>[[IDS]]は「⿰口土」のような漢字のIDS情報です。</p>
-      <p>[[character]]は漢字符号です。</p>
+      <p>{{$t("help.templateUnicode")}}</p>
+      <p>{{$t("help.templateIDS")}}</p>
+      <p>{{$t("help.templateCharacter")}}</p>
       <p>
-        [[GlyphWikiPNG]]はGlyphWikiのPNG画像URLです。[[GlyphWikiSVG]]にすると、SVGファイルのURLになります。
+        {{$t("help.templateGlyphWiki")}}
       </p>
       <br />
       <b-field :label="$t('label.templateField')">
