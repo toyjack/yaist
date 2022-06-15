@@ -1,5 +1,13 @@
 export const state = () => ({
-  template: "",
+  template: `<glyph xml:id="[[unicode]]">
+    <mapping type="IDS">[[IDS]]</mapping>
+    <mapping type="Unicode">[[character]]</mapping>
+    <mapping type="alt">[[standard]]</mapping>
+    <figure>
+        <graphic url="[[GlyphWikiSVG]]"/>
+    </figure>
+</glyph>
+`,
   pasteType: "character",
 });
 

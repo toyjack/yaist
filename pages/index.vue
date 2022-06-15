@@ -160,16 +160,16 @@ export default {
     },
   },
   mounted() {
-    this.xmlBlock = `<glyph xml:id="[[unicode]]">
-    <mapping type="IDS">[[IDS]]</mapping>
-    <mapping type="Unicode">[[character]]</mapping>
-    <mapping type="alt">[[standard]]</mapping>
-    <figure>
-        <graphic url="[[GlyphWikiSVG]]"/>
-    </figure>
-</glyph>
-`;
-    this.$store.commit("settings/updateTemplate", this.xmlBlock);
+//     this.xmlBlock = `<glyph xml:id="[[unicode]]">
+//     <mapping type="IDS">[[IDS]]</mapping>
+//     <mapping type="Unicode">[[character]]</mapping>
+//     <mapping type="alt">[[standard]]</mapping>
+//     <figure>
+//         <graphic url="[[GlyphWikiSVG]]"/>
+//     </figure>
+// </glyph>
+// `;
+//     this.$store.commit("settings/updateTemplate", this.xmlBlock);
     this.fetchData();
   },
   methods: {

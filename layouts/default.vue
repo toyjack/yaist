@@ -56,12 +56,34 @@
 
     <footer class="footer columns is-centered is-vcentered is-mobile">
       <div class="column is-narrow has-text-centered ">
-        <p class="has-text-centered has-text-justified">
-          <strong>YAIST</strong> by <a href="https://researchmap.jp/liuguanwei">{{$t("label.author")}}</a>. The source code is
-          licensed
-          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-          is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+        <p><strong>YAIST</strong> by <a href="https://researchmap.jp/liuguanwei">{{ $t("label.author") }}</a>.
+          The <a href="https://github.com/toyjack/yaist" target="_blank">source code</a> is licensed <a
+            href="http://opensource.org/licenses/mit-license.php">MIT</a>.</p>
+        <p>Please refer to the respective links for the licenses of the
+          data used by this site: <a href="https://www.chise.org/dataset.ja.html">CHISE</a>, <a
+            href="https://glyphwiki.org/wiki/GlyphWiki:%e3%83%97%e3%83%a9%e3%82%a4%e3%83%90%e3%82%b7%e3%83%bc%e3%83%bb%e3%83%9d%e3%83%aa%e3%82%b7%e3%83%bc">GlyphWiki</a>,
+          <a href="https://github.com/cjkvi/cjkvi-ids">CJKVI/CJKVI-IDS</a>, <a
+            href="https://www.unicode.org/copyright.html">Unihan</a>.
         </p>
+        <p>This work was supported by the "<a href="https://www.hi.u-tokyo.ac.jp/en/cdps/datadriven/"
+            target="_blank">Construction of
+            data-driven historical information research
+            infrastructure</a>" project </p>
+        <p>of <a href="https://www.hi.u-tokyo.ac.jp/">Historiographical Institute</a>, <a
+            href="https://www.u-tokyo.ac.jp/ja/index.html">University of
+            Tokyo</a>.</p>
+
+        <!-- 
+          https://www.hi.u-tokyo.ac.jp/cdps/datadriven/
+          https://www.hi.u-tokyo.ac.jp/en/cdps/datadriven/
+
+          HIのデータ駆動PJ　による
+
+          「このサイトについて」のページを追加
+
+
+          ivsのunicode出力　を　format
+         -->
       </div>
     </footer>
   </div>
