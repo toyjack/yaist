@@ -47,7 +47,7 @@ export default {
     '@nuxtjs/i18n',
   ],
   axios: {
-    baseURL: "http://localhost:3000", // Used as fallback if no runtime config is provided
+    baseURL: "/", // Used as fallback if no runtime config is provided
   },
   i18n: {
     /* module options */
@@ -61,7 +61,8 @@ export default {
 
   publicRuntimeConfig: {
     axios: {
-      browserBaseURL: process.env.BROWSER_BASE_URL,
+      // browserBaseURL: process.env.BROWSER_BASE_URL,
+      browserBaseURL: "/",
     },
   },
 
