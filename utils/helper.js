@@ -38,7 +38,7 @@ export function getUnicodeBlock(char){
   //   {"name": "CJK Unified Ideographs Extension D", "start": "U+2B740", "end":"U+2B81D"},
   //   {"name": "CJK Unified Ideographs Extension E", "start": "U+2B820", "end":"U+2CEA1"},
   //   {"name": "CJK Unified Ideographs Extension F", "start": "U+2CEB0", "end":"U+2EBE0"},
-  //   {"name": "CJK Unified Ideographs Extension G", "start": "U+30000", "end":"U+3134A"},    
+  //   {"name": "CJK Unified Ideographs Extension G", "start": "U+30000", "end":"U+3134A"},
   // ]
   // const blocks = [
   //   {"name": "統合漢字", "start": "U+4E00", "end":"U+9FFC"},
@@ -48,7 +48,7 @@ export function getUnicodeBlock(char){
   //   {"name": "拡張漢字D", "start": "U+2B740", "end":"U+2B81D"},
   //   {"name": "拡張漢字E", "start": "U+2B820", "end":"U+2CEA1"},
   //   {"name": "拡張漢字F", "start": "U+2CEB0", "end":"U+2EBE0"},
-  //   {"name": "拡張漢字G", "start": "U+30000", "end":"U+3134A"},    
+  //   {"name": "拡張漢字G", "start": "U+30000", "end":"U+3134A"},
   // ]
   const blocks = [
     {"name": "CJK", "start": "U+4E00", "end":"U+9FFC"},
@@ -58,7 +58,9 @@ export function getUnicodeBlock(char){
     {"name": "Ext. D", "start": "U+2B740", "end":"U+2B81D"},
     {"name": "Ext. E", "start": "U+2B820", "end":"U+2CEA1"},
     {"name": "Ext. F", "start": "U+2CEB0", "end":"U+2EBE0"},
-    {"name": "Ext. G", "start": "U+30000", "end":"U+3134A"},    
+    {"name": "Ext. G", "start": "U+30000", "end":"U+3134A"},
+    {"name": "Ext. H", "start": "U+31350", "end":"U+323AF"},
+
   ]
   const charPoint = fixedCharCodeAt(char)
   // console.log(charPoint)
