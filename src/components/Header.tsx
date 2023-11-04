@@ -53,11 +53,11 @@ export default function Header() {
 
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#" isDisabled>Settings</Link>
+          <Link href="#" isDisabled>設定</Link>
         </NavbarItem>
         <NavbarItem>
           <Button as={Link} color="warning" href="#" variant="flat" isDisabled>
-            LANG
+            Lang
           </Button>
         </NavbarItem>
       </NavbarContent>
