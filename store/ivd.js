@@ -21,9 +21,9 @@ export const mutations = {
       const ivsCode =cells[1].substring(0,5)
       const collection = cells[2]
       // jump adobe-japan
-      if(collection.startsWith('Adobe')){
-        continue
-      }
+      // if(collection.startsWith('Adobe')){
+      //   continue
+      // }
       if (entryCode in state.data){
         if (!(state.data[entryCode].includes(ivsCode) )){
           state.data[entryCode].push(ivsCode)
@@ -31,7 +31,7 @@ export const mutations = {
           continue
         }
       }else{
-        state.data[entryCode]=[]
+        state.data[entryCode]=[ivsCode]
       }
     }
   },
