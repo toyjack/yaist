@@ -25,9 +25,6 @@
             {{ $t("button.search") }}
           </button>
         </div>
-        <b-field>
-          <b-checkbox v-model="ifDeeply">{{$t("button.ifDeeply")}}</b-checkbox>
-        </b-field>
       </section>
 
       <section class="section">
@@ -115,7 +112,6 @@ export default {
   data() {
     return {
       term: "",
-      ifDeeply: false,
       results: [],
       sortStyle: "byUnicode",
       loadingIDS: true,
@@ -192,7 +188,7 @@ export default {
         message: this.$t("message.isSearching"),
         type: "is-info",
       });
-      let results = uniq(idsfind(this.term, this.ifDeeply));
+      let results = uniq(idsfind(this.term, false));
       this.updateData(results);
     },
     updateData(data) {

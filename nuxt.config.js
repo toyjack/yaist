@@ -77,5 +77,9 @@ export default {
   content: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    extend(config) {
+      config.resolve.alias['idsfind'] = require('path').resolve(__dirname, 'node_modules/idsfind/dist/index.js')
+    }
+  },
 };

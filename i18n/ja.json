@@ -19,8 +19,7 @@
   },
   "button": {
     "search": "検索",
-    "decompose": "分解",
-    "ifDeeply": "深層検索"
+    "decompose": "分解"
   },
   "option": {
     "byunicode": "Unicode順",

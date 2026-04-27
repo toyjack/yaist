@@ -16,7 +16,7 @@
     "@nuxtjs/i18n": "^7.2.0",
     "@vue/shared": "^3.2.39",
     "core-js": "^3.15.1",
-    "idsfind": "^2.1.0",
+    "idsfind": "^3.1.0",
     "lodash": "^4.17.21",
     "nuxt": "^2.15.7",
     "nuxt-buefy": "^0.4.8"

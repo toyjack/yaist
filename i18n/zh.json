@@ -19,8 +19,7 @@
   },
   "button": {
     "search": "查找",
-    "decompose": "分解",
-    "ifDeeply": "深层查找"
+    "decompose": "分解"
   },
   "option": {
     "byunicode": "统一码编号",

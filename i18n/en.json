@@ -19,8 +19,7 @@
   },
   "button": {
     "search": "Search",
-    "decompose": "Decompose",
-    "ifDeeply": "Deeply"
+    "decompose": "Decompose"
   },
   "option": {
     "byunicode": "By Unicode",

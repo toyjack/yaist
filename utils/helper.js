@@ -60,6 +60,8 @@ export function getUnicodeBlock(char){
     {"name": "Ext. F", "start": "U+2CEB0", "end":"U+2EBE0"},
     {"name": "Ext. G", "start": "U+30000", "end":"U+3134A"},
     {"name": "Ext. H", "start": "U+31350", "end":"U+323AF"},
+    {"name": "Ext. I", "start": "U+2EBF0", "end":"U+2EE5F"},
+    {"name": "Ext. J", "start": "U+323B0", "end":"U+3347F"},
 
   ]
   const charPoint = fixedCharCodeAt(char)
